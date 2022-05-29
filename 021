@@ -34,3 +34,18 @@ plt.hist(df["surface_covered_in_m2"])
 plt.xlabel("Area [sq meters]")
 plt.title("Distribution of Apartment Sizes");
 
+#some cleaning in function
+
+def wrangle(file_path):
+    """
+    This function takes in as input the a path of a file and returns a dataframe to it
+    
+    input: file_path, path of a csv file
+    output: data_frame, data frame to the file
+    """
+    data_frame = pd.read_csv(file_path)
+    data_frame["state"] = data_frame["place_with_parent_names"].str.split("|", expand=True)[2] #getting state column splitted
+
+    data_frame_BI = data_frame[data_frame["state"]== "Capital Federal"]  #slicing on capital
+    data_frame_BI = data_frame_BI[data_frame_BI["price_aprox_usd"]<= 400000] #slicing on price
+    return data_frame_BI
