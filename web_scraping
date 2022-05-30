@@ -1,5 +1,12 @@
-url = "https://......"
+import pandas as pd
+from bs4 import BeautifulSoup
+
+url = "https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"
 df = pd.read_html(url, skiprows = [1])[0]
 df.set_index("Rank", inplace = True)
-df.drop(columns = "% of world", inplace = True)
-df["Date"] = pd.to_datetime(df["date"])
+df.drop(columns = "Percentage of the world", inplace = True)
+df["Date"] = pd.to_datetime(df["Date"])
+
+html = requests.get(url).text
+soup = BeautifulSoup(html, "html.parser")
+print(soup.prettify)
