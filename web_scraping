@@ -10,3 +10,16 @@ df["Date"] = pd.to_datetime(df["Date"])
 html = requests.get(url).text
 soup = BeautifulSoup(html, "html.parser")
 print(soup.prettify)
+
+
+#Initialize Array
+results=[]
+for page in range(0,50,10):
+    url = f"https://pk.indeed.com/jobs?q=data%20analyst&l=Islamabad&start={page}"
+    #Request HTML
+    html = requests.get(url).text
+    soup = BeautifulSoup(html, "html.parser") #parse HTML
+    results.append(soup) #append HTML
+
+names = results[0].find_all("span", {"Class": "companyName"})
+[n.text for n in names]   
