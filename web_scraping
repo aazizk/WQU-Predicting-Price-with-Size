@@ -12,14 +12,17 @@ soup = BeautifulSoup(html, "html.parser")
 print(soup.prettify)
 
 
+
+from bs4 import BeautifulSoup
+import requests
 #Initialize Array
 results=[]
 for page in range(0,50,10):
-    url = f"https://pk.indeed.com/jobs?q=data%20analyst&l=Islamabad&start={page}"
+    url = f"https://www.indeed.com/jobs?q=data%20analyst&l=Los%20Angeles%2C%20CA&start={page}"
     #Request HTML
     html = requests.get(url).text
     soup = BeautifulSoup(html, "html.parser") #parse HTML
     results.append(soup) #append HTML
 
-names = results[0].find_all("span", {"Class": "companyName"})
-[n.text for n in names]   
+names = results[0].find_all("span", {"class": "companyName"})
+[n.text for n in names] 
