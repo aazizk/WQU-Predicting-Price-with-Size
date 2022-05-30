@@ -2,4 +2,4 @@ url = "https://......"
 df = pd.read_html(url, skiprows = [1])[0]
 df.set_index("Rank", inplace = True)
 df.drop(columns = "% of world", inplace = True)
-df["Date"] = pd.datetime(df["date"])
+df["Date"] = pd.to_datetime(df["date"])
