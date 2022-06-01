@@ -96,3 +96,8 @@ X_train = df[features]
 target = "price_aprox_usd"
 #y-train for Target Vector
 y_train = df[target]
+
+#knowking the mean of target value
+y_mean = y_train.mean()
+
+
