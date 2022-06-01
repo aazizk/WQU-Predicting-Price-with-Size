@@ -116,3 +116,9 @@ mae_baseline = mean_absolute_error(y_train, y_pred_baseline)
 print("Mean apt price:", round(y_mean, 2))
 print("Baseline MAE:", round(mae_baseline, 2))
 
+#instantiating the model
+model = LinearRegression()
+
+# Check your work
+assert isinstance(model, LinearRegression)
+
