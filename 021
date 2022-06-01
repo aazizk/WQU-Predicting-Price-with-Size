@@ -74,3 +74,7 @@ plt.title("Distribution of Apartment Sizes");
 
 df.describe()["price_aprox_usd"]
 
+low, high = df["surface_covered_in_m2"].quantile([0.1,0.9])
+mask_area = df["surface_covered_in_m2"].between(low, high)
+df= df[mask_area]
+df.head()
