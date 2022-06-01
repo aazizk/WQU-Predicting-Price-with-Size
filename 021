@@ -156,3 +156,12 @@ coefficient = round(model.coef_[0], 2)
 print('Model coefficient for "surface_covered_in_m2":', coefficient)
 assert any([isinstance(coefficient, int), isinstance(coefficient, float)])
 
+#Writing equation using fprint
+f"Apratment Price = {intercept} + {coefficient} * Surface Area"
+
+#Model plot
+plt.plot(X_train, model.predict(X_train), color = "r", Label = "Linear Model");
+plt.scatter(X_train, y_train)
+plt.xlabel("surface covered [sq meters]")
+plt.ylabel("price [usd]")
+plt.legend();
