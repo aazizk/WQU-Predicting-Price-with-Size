@@ -100,4 +100,15 @@ y_train = df[target]
 #knowking the mean of target value
 y_mean = y_train.mean()
 
+#baseline
+y_pred_baseline = [y_mean] * len(y_train)
+
+#our naive model
+plt.plot(X_train, y_pred_baseline, color = "orange", label = "Baselining")
+plt.scatter(X_train, y_train)
+plt.xlabel("Area [sq meters]")
+plt.ylabel("Price [USD]")
+plt.title("Buenos Aires: Price vs. Area")
+plt.legend();
+
 
