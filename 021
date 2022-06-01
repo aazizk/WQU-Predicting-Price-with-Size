@@ -67,3 +67,10 @@ def wrangle(file_path):
 df = wrangle("data/buenos-aires-real-estate-1.csv")
 print("df shape:", df.shape)
 df.head()
+
+plt.hist(df["surface_covered_in_m2"])
+plt.xlabel("Area [sq meters]")
+plt.title("Distribution of Apartment Sizes");
+
+df.describe()["price_aprox_usd"]
+
