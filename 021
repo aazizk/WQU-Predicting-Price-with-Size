@@ -90,4 +90,9 @@ df["surface_covered_in_m2"].corr(df["price_aprox_usd"])
 
 #splitting data to train the model
 features = ["surface_covered_in_m2"]
+# X_train for feature matrix
 X_train = df[features]
+
+target = "price_aprox_usd"
+#y-train for Target Vector
+y_train = df[target]
