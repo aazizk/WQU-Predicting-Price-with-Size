@@ -41,4 +41,10 @@ frame1 = wrangle("data/buenos-aires-real-estate-1.csv")
 print(frame1.info())
 frame1.head()
 
+frame2 = wrangle("data/buenos-aires-real-estate-2.csv")
+
+df = pd.concat([frame1, frame2], ignore_index= True)
+print(df.info())
+df.head()
+
 
