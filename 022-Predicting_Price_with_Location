@@ -77,3 +77,31 @@ fig.update_traces(
 # Display figure
 fig.show()
 
+features = ["lon", "lat"]
+X_train = df[features]
+
+target = "price_aprox_usd"
+y_train = df[target]
+
+y_mean = y_train.mean()
+y_predict_baseline = [y_mean] * len(y_train)
+
+mae_baseline = mean_absolute_error(y_train, y_pred_baseline)
+
+print("Mean apt price", round(y_mean, 2))
+print("Baseline MAE:", round(mae_baseline, 2))
+
+#Imputer initialization and Fit
+imputer = SimpleImputer()
+imputer.fit(X_train)
+
+#Data Transformation done
+
+XT_train = imputer.transform(X_train)
+pd.DataFrame(XT_train, columns=X_train.columns).info()
+
+model = make_pipeline( # Pipelining
+    SimpleImputer(),
+    LinearRegression()
+)
+
