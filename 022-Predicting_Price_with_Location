@@ -32,4 +32,13 @@ def wrangle(filepath):
     mask_area = df["surface_covered_in_m2"].between(low, high)
     df = df[mask_area]
     
+    df[["lat", "lon"]] = df["lat-lon"].str.split(",", expand = True).astype(float)
+    df.drop(columns = "lat-lon", inplace = True)
+    
     return df
+    
+frame1 = wrangle("data/buenos-aires-real-estate-1.csv")
+print(frame1.info())
+frame1.head()
+
+
