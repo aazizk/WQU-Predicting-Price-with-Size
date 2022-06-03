@@ -33,6 +33,10 @@ def wrangle(filepath):
     # Split "lat-lon" column
     df[["lat", "lon"]] = df["lat-lon"].str.split(",", expand=True).astype(float)
     df.drop(columns="lat-lon", inplace=True)
+    
+    df["neighborhood"] = df["place_with_parent_names"].str.split("|", expand = True)[3]
+    df.drop("place_with_parent_names", inplace = True)
+    
     return df
     
 #using glob to read multiple files
@@ -41,5 +45,7 @@ frames = [] #initialize the df array
 for file in files: #read files one by one
     df = wrangle(file) # wrangle files
     frames.append(df) #append dfs
+
+df = pd.concat(frames, ignore_index=True)
 
 
