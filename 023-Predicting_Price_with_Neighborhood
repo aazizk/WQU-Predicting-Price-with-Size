@@ -35,7 +35,7 @@ def wrangle(filepath):
     df.drop(columns="lat-lon", inplace=True)
     
     df["neighborhood"] = df["place_with_parent_names"].str.split("|", expand = True)[3]
-    df.drop("place_with_parent_names", inplace = True)
+    df.drop(columns = "place_with_parent_names", inplace = True)
     
     return df
     
@@ -48,4 +48,20 @@ for file in files: #read files one by one
 
 df = pd.concat(frames, ignore_index=True)
 
+#splitting data for training
+target = "price_aprox_usd"
+features = ["neighborhood"]
+y_train = df[target]
+X_train = df[features]
 
+#baseline
+y_mean = y_train.mean()
+y_pred_baseline = [y_mean] * len(y_train)
+print("Mean apt price:", y_mean)
+
+ohe = OneHotEncoder(use_cat_names = True)
+ohe.fit(df)
+XT_train = ohe.transform(df)
+print(XT_train.shape)
+XT_train.head()
+print("Baseline MAE:", mean_absolute_error(y_train, y_pred_baseline))
