@@ -91,3 +91,24 @@ def make_prediction(area, lat, lon, neighborhood):
     prediction = model.predict(df)
     return f"Predicted apartment price: ${prediction}"
 
+interact(
+    make_prediction,
+    area=IntSlider(
+        min=X_train["surface_covered_in_m2"].min(),
+        max=X_train["surface_covered_in_m2"].max(),
+        value=X_train["surface_covered_in_m2"].mean(),
+    ),
+    lat=FloatSlider(
+        min=X_train["lat"].min(),
+        max=X_train["lat"].max(),
+        step=0.01,
+        value=X_train["lat"].mean(),
+    ),
+    lon=FloatSlider(
+        min=X_train["lon"].min(),
+        max=X_train["lon"].max(),
+        step=0.01,
+        value=X_train["lon"].mean(),
+    ),
+    neighborhood=Dropdown(options=sorted(X_train["neighborhood"].unique())),
+);
