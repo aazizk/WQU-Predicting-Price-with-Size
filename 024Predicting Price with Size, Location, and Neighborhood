@@ -33,12 +33,13 @@ def wrangle(filepath):
 
     # Split "lat-lon" column
     df[["lat", "lon"]] = df["lat-lon"].str.split(",", expand=True).astype(float)
-    df.drop(columns="lat-lon", inplace=True)
+#    df.drop(columns="lat-lon", inplace=True) Added in below drop code
 
     # Get place name
     df["neighborhood"] = df["place_with_parent_names"].str.split("|", expand=True)[3]
-    df.drop(columns="place_with_parent_names", inplace=True)
-
+    df.drop(columns=["place_with_parent_names", "floor", "expenses", "lat-lon"], inplace=True)
+    
+    df.drop(columns=["operation", "property_type", "currency", "properati_url"], inplace=True) #drop low and high cadinality columns
     
     return df
 
