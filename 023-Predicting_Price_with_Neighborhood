@@ -75,6 +75,10 @@ y_pred_training = model.predict(X_train)
 mae_training = mean_absolute_error(y_train, y_pred_training)
 print("Training MAE:", round(mae_training, 2))
 
+X_test = pd.read_csv("data/buenos-aires-test-features.csv")[features]
+y_pred_test = pd.Series(model.predict(X_test))
+y_pred_test.head()
+
 intercept = model.named_steps["linearregression"].intercept_
 coefficients = model.named_steps["linearregression"].coef_
 print("coefficients len:", len(coefficients))
@@ -87,12 +91,19 @@ print(feature_names[:5])  # First five feature names
 feat_imp = pd.Series(coefficients, index = feature_names)
 feat_imp.head()
 
-print(f"price = {intercept.round(2)}")model = make_pipeline( #using Ridge model
+print(f"price = {intercept.round(2)}")
+for f, c in feat_imp.items():
+    print(f"+ ({round(c, 2)} * {f})")
+
+model = make_pipeline( #using Ridge model
     OneHotEncoder(use_cat_names=True),
     Ridge()
 )
 model.fit(X_train, y_train)
-for f, c in feat_imp.items():
-    print(f"+ ({round(c, 2)} * {f})")
 
+
+intercept = model.named_steps["ridge"].intercept_
+coefficients = model.named_steps["ridge"].coef_
+print("coefficients len:", len(coefficients))
+print(coefficients[:5])  # First five coefficients
 
