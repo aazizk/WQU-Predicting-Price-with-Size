@@ -59,9 +59,20 @@ y_mean = y_train.mean()
 y_pred_baseline = [y_mean] * len(y_train)
 print("Mean apt price:", y_mean)
 
-ohe = OneHotEncoder(use_cat_names = True)
-ohe.fit(df)
-XT_train = ohe.transform(df)
+ohe = OneHotEncoder(use_cat_names = True) #instantiate
+ohe.fit(X_train) #fit model
+XT_train = ohe.transform(X_train) #Transform
 print(XT_train.shape)
 XT_train.head()
-print("Baseline MAE:", mean_absolute_error(y_train, y_pred_baseline))
+
+model = make_pipeline(
+    OneHotEncoder(use_cat_names=True),
+    LinearRegression()
+)
+model.fit(X_train, y_train)
+
+y_pred_training = model.predict(X_train)
+mae_training = mean_absolute_error(y_train, y_pred_training)
+print("Training MAE:", round(mae_training, 2))
+
+
