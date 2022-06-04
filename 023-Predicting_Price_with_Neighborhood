@@ -107,3 +107,7 @@ coefficients = model.named_steps["ridge"].coef_
 print("coefficients len:", len(coefficients))
 print(coefficients[:5])  # First five coefficients
 
+feat_imp.sort_values(key = abs).tail(15).plot(kind = "barh")
+plt.xlabel("Importance [USD]")
+plt.ylabel("Feature")
+plt.title("Feature importance for apartment price");
