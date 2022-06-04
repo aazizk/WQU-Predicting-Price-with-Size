@@ -65,3 +65,29 @@ y_pred_baseline = [y_mean] * len(y_train)
 print("Mean apt price:", round(y_mean, 2))
 print("Baseline MAE:", mean_absolute_error(y_train, y_pred_baseline))
 
+model = make_pipeline(
+    OneHotEncoder(use_cat_names=True),
+    SimpleImputer(),
+    Ridge()
+)
+model.fit(X_train, y_train)
+
+y_pred_training = model.predict(X_train)
+mae_training = mean_absolute_error(y_train, y_pred_training)
+print("Training MAE:", round(mae_training, 2))
+
+X_test = pd.read_csv("data/buenos-aires-test-features.csv")
+y_pred_test = pd.Series(model.predict(X_test))
+y_pred_test.head()
+
+def make_prediction(area, lat, lon, neighborhood):
+    data = {
+        "surface_covered_in_m2": area,
+        "lat": lat,
+        "lon": lon,
+        "neighborhood": neighborhood
+    }
+    df = pd.DataFrame(data, index=[0])
+    prediction = model.predict(df)
+    return f"Predicted apartment price: ${prediction}"
+
