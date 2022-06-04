@@ -84,4 +84,15 @@ feature_names = model.named_steps["onehotencoder"].get_feature_names()
 print("features len:", len(feature_names))
 print(feature_names[:5])  # First five feature names
 
+feat_imp = pd.Series(coefficients, index = feature_names)
+feat_imp.head()
+
+print(f"price = {intercept.round(2)}")model = make_pipeline( #using Ridge model
+    OneHotEncoder(use_cat_names=True),
+    Ridge()
+)
+model.fit(X_train, y_train)
+for f, c in feat_imp.items():
+    print(f"+ ({round(c, 2)} * {f})")
+
 
