@@ -75,4 +75,13 @@ y_pred_training = model.predict(X_train)
 mae_training = mean_absolute_error(y_train, y_pred_training)
 print("Training MAE:", round(mae_training, 2))
 
+intercept = model.named_steps["linearregression"].intercept_
+coefficients = model.named_steps["linearregression"].coef_
+print("coefficients len:", len(coefficients))
+print(coefficients[:5])  # First five coefficients
+
+feature_names = model.named_steps["onehotencoder"].get_feature_names()
+print("features len:", len(feature_names))
+print(feature_names[:5])  # First five feature names
+
 
