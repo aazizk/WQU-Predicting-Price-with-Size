@@ -3,6 +3,7 @@ from glob import glob
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 import seaborn as sns
 import wqet_grader
 from category_encoders import OneHotEncoder
@@ -73,3 +74,66 @@ plt.title("Distribution of Apartment Prices");
 # Don't delete the code below 👇
 plt.savefig("images/2-5-4.png", dpi=150)
 
+# Plot price vs area
+plt.scatter(x=df["surface_covered_in_m2"], y=df["price_aprox_usd"])
+plt.xlabel("Area [sq meters]")
+plt.ylabel("Price [USD]")
+plt.title("Mexico City: Price vs. Area");
+# Don't delete the code below 👇
+plt.savefig("images/2-5-5.png", dpi=150)
+
+# Plot Mapbox location and price
+fig = px.scatter_mapbox(
+    df,  # Our DataFrame
+    lat="lat",
+    lon="lon",
+    width=600,  # Width of map
+    height=600,  # Height of map
+    color="price_aprox_usd",
+    hover_data=["price_aprox_usd"],  # Display price when hovering mouse over house
+)
+
+fig.update_layout(mapbox_style="open-street-map")
+
+fig.show()
+
+# Split data into feature matrix `X_train` and target vector `y_train`.
+target = "price_aprox_usd"
+features = ["surface_covered_in_m2", "lat", "lon", "borough"]
+X_train = df[features]
+y_train = df[target]
+
+y_mean = y_train.mean()
+y_pred_baseline = [y_mean] * len(y_train)
+baseline_mae = mean_absolute_error(y_train, y_pred_baseline)
+print("Mean apt price:", y_mean)
+print("Baseline MAE:", baseline_mae)
+
+# Build Model
+model = make_pipeline(
+    OneHotEncoder(use_cat_names=True),
+    SimpleImputer(),
+    Ridge()
+)
+# Fit model
+model.fit(X_train, y_train)
+
+X_test = pd.read_csv("data/mexico-city-test-features.csv")
+print(X_test.info())
+X_test.head()
+
+y_test_pred = pd.Series(model.predict(X_test))
+y_test_pred.head()
+
+coefficients = model.named_steps["ridge"].coef_.round(2)
+features = model.named_steps["onehotencoder"].get_feature_names()
+feat_imp = pd.Series(coefficients, index = features)
+feat_imp
+
+# Create horizontal bar chart
+feat_imp.sort_values(key = abs).tail(10).plot(kind = "barh")
+plt.xlabel("Importance [USD]")
+plt.ylabel("Feature")
+plt.title("Feature Importance for Apartment Price");
+# Don't delete the code below 👇
+plt.savefig("images/2-5-13.png", dpi=150)
