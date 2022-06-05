@@ -2,6 +2,7 @@ import warnings
 from glob import glob
 
 import pandas as pd
+import matplotlib.pyplot as plt
 import seaborn as sns
 import wqet_grader
 from category_encoders import OneHotEncoder
@@ -55,4 +56,20 @@ df.isnull().sum() / len(df) # checking nulls
 sorted(df.columns) # to check leakage
 corr = df.select_dtypes("number").drop(columns = "price_aprox_usd").corr()
 sns.heatmap(corr) # heatmap to check multi-colinearity
+
+files = glob(("data/mexico-city-real-estate-*.csv"))
+files
+
+frames = [wrangle(file) for file in files]
+df = pd.concat(frames, ignore_index = True)
+print(df.info())
+df.head()
+
+# Plot distribution of price
+plt.hist(df["price_aprox_usd"])
+plt.xlabel("Area [sq meters]")
+plt.ylabel("Count")
+plt.title("Distribution of Apartment Prices");
+# Don't delete the code below 👇
+plt.savefig("images/2-5-4.png", dpi=150)
 
